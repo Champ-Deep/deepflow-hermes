@@ -33,8 +33,22 @@ u=$(wc -c < "$HERMES_HOME/memories/USER.md"); m=$(wc -c < "$HERMES_HOME/memories
 [ "$m" -le 2200 ] || warn "MEMORY.md is $m chars, over the 2200 limit. Trim it."
 
 # 2. Non secret config, applied through hermes so its own defaults and migrations survive.
-#    Provider endpoints and keys are added in SETUP.md step 3 and 4 through `hermes model`.
+#    Providers reference their keys by name (key_env); the keys themselves are added in SETUP.md step 3.
 set_cfg() { hermes config set "$1" "$2" >/dev/null 2>&1 && say "config $1" || warn "could not set $1 (set it in hermes config edit)"; }
+
+# Models: OpenRouter free model for chat, Gemini Flash Lite for cron and auxiliary, Cerebras and Groq as fallbacks.
+set_cfg model.provider openrouter
+set_cfg model.default "openai/gpt-oss-20b:free"
+set_cfg providers.gemini '{"api":"https://generativelanguage.googleapis.com/v1beta/openai/","key_env":"GEMINI_API_KEY","discover_models":false,"default_model":"gemini-3.5-flash-lite","models":["gemini-3.5-flash-lite","gemini-2.5-flash"]}'
+set_cfg providers.cerebras '{"api":"https://api.cerebras.ai/v1","key_env":"CEREBRAS_API_KEY","discover_models":false,"default_model":"gpt-oss-120b","models":["gpt-oss-120b"]}'
+set_cfg providers.groq '{"api":"https://api.groq.com/openai/v1","key_env":"GROQ_API_KEY","discover_models":false,"default_model":"llama-3.3-70b-versatile","models":["llama-3.3-70b-versatile","openai/gpt-oss-120b"]}'
+set_cfg fallback_providers '[{"provider":"gemini","model":"gemini-3.5-flash-lite"},{"provider":"cerebras","model":"gpt-oss-120b"}]'
+set_cfg cron.provider gemini
+set_cfg cron.model gemini-3.5-flash-lite
+set_cfg auxiliary.compression '{"provider":"gemini","model":"gemini-3.5-flash-lite"}'
+set_cfg auxiliary.title_generation '{"provider":"gemini","model":"gemini-3.5-flash-lite"}'
+set_cfg auxiliary.approval '{"provider":"gemini","model":"gemini-3.5-flash-lite"}'
+set_cfg auxiliary.vision '{"provider":"gemini","model":"gemini-3.5-flash-lite","timeout":120}'
 
 set_cfg approvals.mode smart
 set_cfg approvals.timeout 3600
@@ -43,7 +57,8 @@ set_cfg approvals.single_query_mode deny
 set_cfg approvals.unattended_mode deny
 set_cfg approvals.deny '["git push --force*","git push -f*","wrangler pages deploy * --branch main*","wrangler pages deploy * --branch=main*","wrangler pages project delete*","wrangler dns *","rm -rf ~*","rm -rf /*","rm -rf $HOME*","*~/.hermes/.env*","*~/.hermes/platforms/*"]'
 set_cfg agent.clarify_timeout 3600
-set_cfg agent.personalities.flow "Wry but warm, short, first two lines carry the message. Zero em dashes and en dashes. Options as a numbered list only when a choice is needed. Act on reversible things, ask with options on public, permanent, expensive or brand changing things."
+set_cfg timezone Asia/Kolkata
+set_cfg personalities.flow "Wry but warm, short, first two lines carry the message. Zero em dashes and en dashes. Options as a numbered list only when a choice is needed. Act on reversible things, ask with options on public, permanent, expensive or brand changing things."
 set_cfg display.personality flow
 set_cfg memory.memory_enabled true
 set_cfg memory.user_profile_enabled true

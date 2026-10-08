@@ -1,6 +1,6 @@
 # Setup
 
-Forty minutes from a bare Mac to a working assistant on Telegram that runs every day. Sreekar does steps 1 and 2 by hand. From step 3, he can paste one line into Hermes and let it drive:
+Forty minutes from a bare Mac to a working assistant on Telegram that runs every day. Every step below was run end to end against Hermes v0.21.6 on 9 October 2026. Sreekar does steps 1 and 2 by hand. From step 3, he can paste one line into Hermes and let it drive:
 
 > Set yourself up from ~/deepflow-hermes/SETUP.md, starting at step 3. Ask me with options when a step needs something from me. Do not wait for permission on anything reversible.
 
@@ -30,7 +30,7 @@ If `hermes` is not found: `export PATH="$HOME/.local/bin:$PATH"` and add that li
 
 ```bash
 cd ~
-git clone <the link Champ sent> deepflow-hermes   # or unzip the folder he sent into ~/deepflow-hermes
+git clone https://github.com/Champ-Deep/deepflow-hermes.git deepflow-hermes   # or unzip the archive Champ sent into ~/deepflow-hermes
 cd ~/deepflow-hermes
 ./install.sh
 ```
@@ -67,20 +67,21 @@ hermes config set GROQ_API_KEY ...
 chmod 600 ~/.hermes/.env
 ```
 
-**Check:** `hermes config check` passes. `grep -c API_KEY ~/.hermes/.env` prints 4 or more.
+**Check:** `hermes config check` passes and `hermes doctor` no longer lists a missing credential for openrouter.
 
 ## Step 4. Verify the models (Hermes)
 
-`install.sh` applied the non secret settings. Providers and their keys are added here through the Hermes wizard, so secrets land in `~/.hermes/.env` the way Hermes expects. Model ids in `hermes/config.yaml` were correct on 8 October 2026 and will drift.
+`install.sh` already wrote the whole routing into the live config: OpenRouter free model for chat, the gemini, cerebras and groq providers (keys referenced by name, read from `.env`), the fallback chain, `cron.provider` and `cron.model` so every scheduled job runs on the free Gemini pool, and the auxiliary tasks. Nothing to add by hand. What remains is checking that the model ids still exist, because they drift.
 
-1. `hermes model`, choose OpenRouter, paste the key, pick a `:free` model that lists tool calling and 64K or more context (the reference config uses `openai/gpt-oss-20b:free`). This becomes `model.default`.
-2. `hermes model` again, Custom Endpoint, three times, one per provider in `hermes/config.yaml` under `providers:` (gemini, cerebras, groq): name, base URL, key, model id. Verify each id on the provider's model list first.
-3. Apply the fallback chain and the auxiliary routing with `hermes config set fallback_providers '<json from config.yaml>'` and `hermes config set auxiliary.compression '<json>'` (same for `title_generation`, `approval`, `vision`). If `config set` rejects a nested value, `hermes config edit` and paste the block.
-4. Smoke test: `hermes chat -q "Reply with the single word ok."` on the default model, then once more after `/model` to each fallback. If an id is gone, pick the closest current free model, note the swap in `CHANGELOG.md`, and update `hermes/config.yaml` in the repo so the two stay in step.
+1. `hermes config get model.default`, `hermes config get providers`, `hermes config get cron.model`: confirm they match `hermes/config.yaml`.
+2. Smoke test the main model: `hermes chat -q "Reply with the single word ok."`
+3. Smoke test each fallback the same way after `hermes config set model.provider gemini` (then `cerebras`), and set `model.provider` back to `openrouter` at the end. Or use `hermes model` to pick interactively; the custom providers show up there by name.
+4. If an id is gone or returns a 404 or "model not found": open the provider's model list, pick the closest current free model with 64K or more context and tool calling, `hermes config set` the new id (for example `hermes config set cron.model <id>` or `hermes config set providers.gemini.default_model <id>`), update `hermes/config.yaml` and `install.sh` in the repo so they stay in step, and note the swap in `CHANGELOG.md`.
+5. A test run of a scheduled job on the cron model, without waiting for the schedule: `hermes cron create "in 2m" "Reply with the word ready." --name "Cron smoke test" --deliver local`, wait, then `hermes cron runs` and remove it.
 
 Read `context/08-model-strategy.md` for the routing logic and what to do when a limit hits.
 
-**Check:** every model in the chain answered the smoke test. Record the four ids and the date in `~/.hermes/setup-progress.md`.
+**Check:** the main model and both fallbacks answered the smoke test, and the cron smoke test produced a run. Record the ids and the date in `~/.hermes/setup-progress.md`.
 
 ## Step 5. Channel (Hermes asks, Sreekar picks)
 
