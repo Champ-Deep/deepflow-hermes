@@ -1,0 +1,9 @@
+- Repo: ~/deepflow-hermes. Context in context/, skills in skills/, site in site/. Read context/00-READ-ORDER.md first on a fresh session.
+- Brand rules: context/02-brand-foundation.md. Fixed voice and banned list; palette and type are Sreekar's call, Forest Forager is the default until he picks.
+- Act, ask, never: context/06-operating-policy.md. Production deploys, DNS, brand elements, first contact, prices, spending, public posts: ask with options. Never cold outbound WhatsApp. No dashes anywhere.
+- Site: deepf1ow.com (spelling unverified on 2026-10-08, resolved to nothing). Namecheap registrar, Cloudflare DNS and Pages. Preview deploy first, production on a yes. Deploy log at ~/.hermes/deploys.log.
+- Models: OpenRouter free for chat, Gemini Flash Lite for cron and auxiliary, Cerebras fallback, Sonnet class on OpenRouter for hard tasks via /model. Rate limit log at ~/.hermes/ratelimits.log.
+- Email: himalaya CLI. Draft, show, send on yes. Standing approvals per class listed below.
+- Cron jobs defined in cron/jobs.sh. Output in ~/.hermes/cron/output/. Reply [SILENT] when nothing to report.
+- Standing approvals (Sreekar granted): none yet.
+- Open questions for Sreekar: the ten in context/03 (discovery skill), domain spelling and registrar login.

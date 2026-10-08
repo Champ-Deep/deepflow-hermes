@@ -1,0 +1,121 @@
+# Deep Flow Hermes config (reference copy)
+#
+# This file is the readable source of truth. install.sh applies these values to
+# ~/.hermes/config.yaml with `hermes config set key value`, so Hermes' own
+# defaults and migrations are kept. Do not copy this file over ~/.hermes/config.yaml.
+# Secrets never go here. They live in ~/.hermes/.env (see env.example).
+# Model ids are the ones checked on 2026-10-08; SETUP.md step 4 verifies each with `hermes model`.
+
+model:
+  provider: openrouter
+  default: openai/gpt-oss-20b:free        # verify: any :free model with tool calling and 64K+ context
+  api_mode: chat_completions
+
+providers:
+  gemini:
+    api: https://generativelanguage.googleapis.com/v1beta/openai/
+    api_key: ${GEMINI_API_KEY}
+    discover_models: false
+    models:
+      - gemini-3.5-flash-lite              # verify current Flash Lite id; about 500 free requests a day
+      - gemini-2.5-flash
+  cerebras:
+    api: https://api.cerebras.ai/v1
+    api_key: ${CEREBRAS_API_KEY}
+    discover_models: false
+    models:
+      - gpt-oss-120b
+  groq:
+    api: https://api.groq.com/openai/v1
+    api_key: ${GROQ_API_KEY}
+    discover_models: false
+    models:
+      - llama-3.3-70b-versatile
+      - openai/gpt-oss-120b
+
+# Main fallback chain: used when the default model is rate limited or down.
+fallback_providers:
+  - provider: gemini
+    model: gemini-3.5-flash-lite
+  - provider: cerebras
+    model: gpt-oss-120b
+
+# Cheap jobs run on the cheapest capable model, not the main one.
+auxiliary:
+  compression:
+    provider: gemini
+    model: gemini-3.5-flash-lite
+    fallback_chain:
+      - provider: groq
+        model: llama-3.3-70b-versatile
+  title_generation:
+    provider: gemini
+    model: gemini-3.5-flash-lite
+  approval:
+    provider: gemini
+    model: gemini-3.5-flash-lite
+  vision:
+    provider: gemini
+    model: gemini-3.5-flash-lite
+    timeout: 120
+
+# Smart: low risk commands run, dangerous ones are denied, uncertain ones ask.
+# cron_mode stays deny: a scheduled job never gets to run a flagged command.
+approvals:
+  mode: smart
+  timeout: 3600
+  cron_mode: deny
+  single_query_mode: deny
+  unattended_mode: deny
+  deny:
+    - "git push --force*"
+    - "git push -f*"
+    - "wrangler pages deploy * --branch main*"      # production goes through the gate in the skill, never raw
+    - "wrangler pages deploy * --branch=main*"
+    - "wrangler pages project delete*"
+    - "wrangler dns *"
+    - "rm -rf ~*"
+    - "rm -rf /*"
+    - "rm -rf $HOME*"
+    - "*~/.hermes/.env*"
+    - "*~/.hermes/platforms/*"
+
+agent:
+  clarify_timeout: 3600
+  personalities:
+    flow: "Wry but warm, short, first two lines carry the message. Zero em dashes and en dashes. Options as a numbered list only when a choice is needed. Act on reversible things, ask with options on public, permanent, expensive or brand changing things."
+
+display:
+  personality: flow
+
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+  write_approval: false
+
+skills:
+  write_approval: false
+  guard_agent_created: true
+  auto_load:
+    - deepflow-brand
+    - no-ai-slop
+
+terminal:
+  backend: local
+  timeout: 300
+  cwd: ~/deepflow-hermes
+
+browser:
+  cloud_provider: local
+  headed: false
+  record_sessions: false
+  dialog_policy: dismiss
+
+image_gen:
+  provider: openrouter                      # cheapest; switch to fal with a small balance if quality is short
+  max_parallel_requests: 2
+
+whatsapp:
+  unauthorized_dm_behavior: ignore
+  group_policy: pairing
+  require_mention: true

@@ -1,0 +1,11 @@
+- Name: Sreekar Surapaneni. Call him Sreekar.
+- Runs Deep Flow, a small stable near Bangalore for the flow arts community. His personal project.
+- Also supports the Champions Club (Ranch, Yacht Club) and 100X Longevity teams: marketing and content, ranch activities and events, outreach and sales support. Group context stays light for now.
+- Brother of Champ (Sreedeep), who built this setup and owns the Deep Flow heritage.
+- Machine: older MacBook Air. Free API tiers for daily loops, paid mid tier model only for hard tasks.
+- Preferred channel: [Telegram or WhatsApp, set during setup].
+- Working hours and timezone: [ask in discovery]. IST.
+- Likes: short replies, first two lines carry the message, options as numbered lists, playful tone welcome.
+- Dislikes: em dashes, brochure language, being asked for permission on small reversible things.
+- Practices: [ask in discovery: poi, staff, hoop, riding, other].
+- Six month goal: [ask in discovery].

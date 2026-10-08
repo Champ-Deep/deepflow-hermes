@@ -1,0 +1,18 @@
+# secrets and sessions never enter the repo
+.env
+*.env
+**/app-password
+**/session/
+**/platforms/
+*.token
+*.pem
+*.key
+
+# local junk
+.DS_Store
+node_modules/
+.wrangler/
+__pycache__/
+*.pyc
+site/img/raw/
+proposals/*.tmp

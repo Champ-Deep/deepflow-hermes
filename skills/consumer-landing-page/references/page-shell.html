@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deep Flow</title>
+<meta name="description" content="Flow arts, horses and open ground near Bangalore. Come to the next session.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ---------- tokens (move to css/tokens.css in the real site) ---------- */
+:root{
+  --pine:#1F4A36; --pine-deep:#153626; --cream:#F0E8D5; --cream-warm:#E5DCC8;
+  --lilac:#D7CFEC; --lilac-soft:#EBE6F0; --terra:#B95A2D; --char:#1A1A14; --pine-light:#E2E8E4;
+  --display:"Instrument Serif",Georgia,serif; --body:Inter,system-ui,sans-serif; --mono:"JetBrains Mono","Courier New",monospace;
+  --ease:cubic-bezier(.16,1,.3,1); --radius:16px; --max:1360px; --gutter:clamp(16px,4vw,64px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --cream:#14201A; --cream-warm:#1B2A22; --char:#EDE7D6; --pine-light:#1F3A2C; --lilac-soft:#2A2838; } }
+:root[data-theme="dark"]{ --cream:#14201A; --cream-warm:#1B2A22; --char:#EDE7D6; --pine-light:#1F3A2C; --lilac-soft:#2A2838; }
+
+/* ---------- base ---------- */
+*{box-sizing:border-box} html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--char);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.05;margin:0 0 .4em;letter-spacing:-.01em}
+h1{font-size:clamp(40px,7vw,84px)} h2{font-size:clamp(30px,4.2vw,54px)} h3{font-size:clamp(22px,2.4vw,30px)}
+p{max-width:60ch;margin:0 0 1.2em}
+.wrap{width:min(100% - 2*var(--gutter),var(--max));margin-inline:auto}
+.band{padding:clamp(64px,10vw,128px) 0} .band.pine{background:var(--pine);color:var(--cream)}
+.band.pine h1,.band.pine h2,.band.pine h3{color:var(--cream)} .band.pine p{color:color-mix(in srgb,var(--cream) 88%,transparent)}
+.label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.6;margin-bottom:24px;display:block}
+.band.pine .label{color:var(--lilac);opacity:1}
+img{max-width:100%;height:auto;display:block;border-radius:var(--radius)}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:20;background:var(--pine);color:var(--cream);height:64px;display:flex;align-items:center}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav .mark{font-family:var(--mono);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:13px;color:var(--cream);text-decoration:none}
+.nav a.link{font-family:var(--mono);font-size:12px;color:var(--cream);opacity:.7;text-decoration:none;margin-left:20px;transition:opacity .2s}
+.nav a.link:hover,.nav a.link:focus-visible{opacity:1}
+@media (max-width:640px){.nav a.link{display:none}}
+
+/* ---------- buttons with micro interactions ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 28px;border-radius:999px;background:var(--terra);color:#fff;font:600 14px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border:0;cursor:pointer;overflow:hidden;transition:background .3s ease,transform .1s}
+.btn:hover,.btn:focus-visible{background:var(--pine)} .band.pine .btn:hover,.band.pine .btn:focus-visible{background:var(--lilac);color:var(--char)}
+.btn:active{transform:scale(.97)} .btn:focus-visible{outline:2px solid var(--terra);outline-offset:3px}
+/* label swap: the text rises out and an identical copy rises in (MicroKit project-text-swap-button, ported) */
+.btn .swap{position:relative;display:inline-block;height:1em;line-height:1;overflow:hidden}
+.btn .swap span{display:block;transition:transform .35s var(--ease)} .btn .swap span+span{position:absolute;left:0;top:100%}
+.btn:hover .swap span:first-child,.btn:focus-visible .swap span:first-child{transform:translateY(-100%)}
+.btn:hover .swap span+span,.btn:focus-visible .swap span+span{transform:translateY(-100%)}
+.btn .arr{display:inline-block;transition:transform .35s var(--ease)} .btn:hover .arr{transform:translateX(4px)}
+.under{display:block;font-family:var(--mono);font-size:11px;opacity:.6;margin-top:12px}
+
+/* ---------- cards ---------- */
+.grid{display:grid;gap:32px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--cream);border:1px solid var(--pine-light);border-radius:var(--radius);padding:40px;box-shadow:0 2px 8px rgba(26,26,20,.06);transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(26,26,20,.1)}
+.card.pine{background:var(--pine);color:var(--cream);border:0} .card.lilac{background:var(--lilac-soft);border:0}
+.card h3{margin-top:0}
+
+/* ---------- facts strip, table ---------- */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px;border-top:1px solid var(--pine-light);border-bottom:1px solid var(--pine-light);padding:32px 0}
+.facts b{display:block;font-family:var(--display);font-size:clamp(28px,4vw,44px);font-weight:400} .facts small{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+table{width:100%;border-collapse:collapse;font-size:15px} th,td{text-align:left;padding:14px 8px;border-bottom:1px solid var(--pine-light)} th{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.6;font-weight:400}
+tbody tr{transition:background .2s} tbody tr:hover{background:var(--cream-warm)}
+
+/* ---------- hero ---------- */
+.hero{min-height:calc(100svh - 64px);display:grid;align-items:end;position:relative;isolation:isolate}
+.hero .photo{position:absolute;inset:0;z-index:-1;background:var(--pine) center/cover no-repeat}
+.hero .photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(31,74,54,.92) 0%,rgba(31,74,54,.35) 55%,rgba(31,74,54,.1) 100%)}
+.hero .wrap{padding-bottom:clamp(48px,8vw,96px);color:var(--cream)}
+.hero p{font-size:clamp(17px,2vw,21px);color:color-mix(in srgb,var(--cream) 90%,transparent)}
+
+/* ---------- sticky mobile CTA ---------- */
+.sticky{position:fixed;left:16px;right:16px;bottom:16px;z-index:30;display:none;justify-content:center;transform:translateY(120%);transition:transform .4s var(--ease)}
+.sticky.show{transform:none} @media (max-width:640px){.sticky{display:flex}}
+
+/* ---------- forms ---------- */
+form.capture{display:flex;gap:12px;flex-wrap:wrap;max-width:560px}
+form.capture input{flex:1 1 240px;min-height:48px;border-radius:999px;border:1px solid var(--pine-light);background:var(--cream-warm);padding:0 22px;font:inherit;color:var(--char)}
+form.capture input:focus-visible{outline:2px solid var(--terra);outline-offset:2px}
+
+/* ---------- motion (opt in by script, off under reduced motion and ?static=1) ---------- */
+html.motion .rv{opacity:0;transform:translateY(24px)}
+html.motion .rv.in{opacity:1;transform:none;transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0ms)}
+html.motion .hero h1 .w{display:inline-block;opacity:0;transform:translateY(.4em)}
+html.motion .hero h1 .w.in{opacity:1;transform:none;transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.progress{position:fixed;top:0;left:0;height:2px;width:0;background:var(--terra);z-index:40}
+@media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
+footer{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.6;padding:40px 0}
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"></div>
+
+<nav class="nav"><div class="wrap">
+  <a class="mark" href="/">Deep Flow</a>
+  <div><a class="link" href="#sessions">Sessions</a><a class="link" href="#come">How to come</a><a class="link" href="https://instagram.com/" rel="me">Instagram</a></div>
+</div></nav>
+
+<header class="hero">
+  <div class="photo" role="img" aria-label="A poi trail at golden hour over open ground"></div>
+  <div class="wrap">
+    <span class="label rv" style="color:var(--lilac);opacity:1">Near Bangalore</span>
+    <h1 data-words>Sunday evenings, spin until the light goes.</h1>
+    <p class="rv" style="--d:300ms">A small stable where the poi come out at six. Beginners welcome, horses nearby, nobody watching too closely.</p>
+    <a class="btn rv" style="--d:450ms" href="#come"><span class="swap"><span>Save me a place</span><span>Save me a place</span></span><span class="arr">&rarr;</span></a>
+    <span class="under rv" style="--d:600ms">No payment now. Just tell us you are coming.</span>
+  </div>
+</header>
+
+<section class="band"><div class="wrap">
+  <div class="facts rv">
+    <div><b>Sun</b><small>6 pm, every week</small></div>
+    <div><b>40 min</b><small>from the city</small></div>
+    <div><b>Free</b><small>first session</small></div>
+    <div><b>8</b><small>people at a time</small></div>
+  </div>
+</div></section>
+
+<section class="band pine" id="sessions"><div class="wrap">
+  <span class="label rv">What it is like</span>
+  <h2 class="rv">Open ground, a few horses, and whoever turns up.</h2>
+  <p class="rv" style="--d:120ms">Bring a prop if you have one. If you do not, there are spares. The session runs until the light goes and then there is tea.</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2 class="rv">Who it is for</h2>
+  <div class="grid">
+    <div class="card rv"><h3>Never spun anything</h3><p>Good. The first hour is for you. Wear something you can move in.</p></div>
+    <div class="card pine rv" style="--d:120ms"><h3>Spin already</h3><p>Come for the space and the company. Fire only at the showcases, with a safety lead.</p></div>
+    <div class="card lilac rv" style="--d:240ms"><h3>Here for the horses</h3><p>Say so when you book. There is a quieter corner and someone who will introduce you properly.</p></div>
+  </div>
+</div></section>
+
+<section class="band" id="come"><div class="wrap">
+  <h2 class="rv">Next dates</h2>
+  <table class="rv">
+    <thead><tr><th>Date</th><th>What</th><th>Cost</th><th>Places</th></tr></thead>
+    <tbody>
+      <tr><td>Sun 12 Oct</td><td>Open practice</td><td>Free</td><td>6 left</td></tr>
+      <tr><td>Sun 19 Oct</td><td>Open practice</td><td>Free</td><td>8</td></tr>
+      <tr><td>Sat 1 Nov</td><td>Intro to poi, workshop</td><td>Rs 800</td><td>8</td></tr>
+    </tbody>
+  </table>
+  <form class="capture rv" method="post" action="https://formspree.io/f/REPLACE" style="margin-top:40px">
+    <input type="text" name="name" placeholder="Your name" required aria-label="Your name">
+    <input type="tel" name="whatsapp" placeholder="WhatsApp number" required aria-label="WhatsApp number">
+    <button class="btn" type="submit"><span class="swap"><span>Save me a place</span><span>Save me a place</span></span><span class="arr">&rarr;</span></button>
+  </form>
+  <span class="under">We reply on WhatsApp with directions. No spam, one message when it matters.</span>
+</div></section>
+
+<footer><div class="wrap">Deep Flow &middot; hello@deepf1ow.com &middot; Flow state of mind to the grind state of life</div></footer>
+
+<div class="sticky" id="sticky"><a class="btn" href="#come"><span class="swap"><span>Save me a place</span><span>Save me a place</span></span></a></div>
+
+<script>
+(function(){
+  var h=document.documentElement, q=location.search+location.hash;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce||/static=1|#static/.test(q)||!('IntersectionObserver' in window)) return;
+  h.classList.add('motion');
+  // headline words rise one by one
+  var h1=document.querySelector('h1[data-words]');
+  if(h1){ h1.innerHTML=h1.textContent.split(' ').map(function(w){return '<span class="w">'+w+'</span>'}).join(' ');
+    [].forEach.call(h1.querySelectorAll('.w'),function(w,i){ setTimeout(function(){w.classList.add('in')},150+i*70) }); }
+  // reveals
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target) } }) },{threshold:.18});
+  [].forEach.call(document.querySelectorAll('.rv'),function(el){ io.observe(el) });
+  // progress bar and sticky CTA after the hero
+  var bar=document.querySelector('.progress'), hero=document.querySelector('.hero'), sticky=document.getElementById('sticky');
+  function onScroll(){ var d=h.scrollHeight-innerHeight; bar.style.width=(d>0?scrollY/d*100:0)+'%'; sticky.classList.toggle('show',scrollY>hero.offsetHeight-64) }
+  addEventListener('scroll',function(){ requestAnimationFrame(onScroll) },{passive:true}); onScroll();
+})();
+</script>
+</body>
+</html>
