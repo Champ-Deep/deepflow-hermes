@@ -1,6 +1,6 @@
 # Read order
 
-Read these in order on first run, then only what a task needs. Total read time for Hermes on first boot: all nine files, once.
+Read these in order on first run, then only what a task needs. Total read time for Hermes on first boot: all ten files, once. Then `BACKLOG.md` at the repo root, which is the discretionary work list.
 
 | # | File | What it gives you | Read when |
 |---|------|-------------------|-----------|
@@ -13,6 +13,7 @@ Read these in order on first run, then only what a task needs. Total read time f
 | 07 | `07-domain-site-and-stack.md` | deepf1ow.com, Namecheap, Cloudflare, how pages get built and deployed | Any site or landing page work |
 | 08 | `08-model-strategy.md` | Free tiers for the daily loops, a mid tier model for hard work, how to route | Setup, and whenever a run hits a rate limit |
 | 09 | `09-people.md` | Sreekar, Champ, and the names that come up | Drafting anything that names a person |
+| 10 | `10-connectors-and-tools.md` | What Flow is wired to, what to add later and how | Setup, and before proposing any new tool or MCP server |
 
 Rules for this folder:
 

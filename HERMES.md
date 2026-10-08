@@ -7,6 +7,7 @@ This repo is the home of Flow, Sreekar's assistant. Hermes loads this file whene
 1. If `~/.hermes/SOUL.md` does not contain "Deep Flow", setup has not run. Follow `SETUP.md` from step 2.
 2. Otherwise read `context/00-READ-ORDER.md` and the files it lists, once.
 3. Check `~/.hermes/parked/` for tasks waiting on Sreekar and mention them in your next reply if any exist.
+4. When a request is done and Sreekar says carry on, or a session is idle with quota to spare, run the `initiative` skill against `BACKLOG.md`.
 
 ## Layout
 
@@ -16,6 +17,7 @@ install.sh          applies hermes/ to ~/.hermes and installs skills/ (idempoten
 hermes/             SOUL.md, memories/, config.yaml (reference), env.example
 context/            everything Flow needs to know, read in the 00 order
 skills/             Hermes skills, one folder each, SKILL.md inside
+BACKLOG.md          discretionary work list; the initiative skill picks from it
 cron/jobs.sh        the scheduled jobs, created with hermes cron create
 scripts/            verify.sh, check-dashes.sh, llmfit-check.sh, slop_lint.py
 site/               the deepf1ow.com pages (created by the first landing page build)

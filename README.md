@@ -7,8 +7,8 @@ Forty minutes to set up. Start with `SETUP.md`.
 
 - **An assistant that acts.** Research, drafts, pages, images, inbox triage, forms, scheduling, all done and reported in two lines. It asks you, with buttons, only before the things that are public, permanent, expensive or brand changing.
 - **The whole Deep Flow story.** Both earlier versions of the brand, the decisions and the reasons, the voice rules, the stable, the flow arts scene in Bangalore, and the light version of Champions Club and 100X so it never sounds lost. All in `context/`.
-- **Eleven skills.** Brand rules, a brand discovery session, consumer landing pages (with a tested page shell), image briefs, email, calls (phase 2), browser and forms, research, the daily marketing loop, the nightly self review, and the no slop writing gate.
-- **Six scheduled jobs.** Morning brief, inbox triage three times a day, content ideas three times a week, a daily scene check, a nightly review of its own work, a weekly model and skill check. Each one stays silent when there is nothing to say.
+- **Twelve skills.** Brand rules, a brand discovery session, consumer landing pages (with a tested page shell), image briefs, email, calls (phase 2), browser and forms, research, the daily marketing loop, an initiative skill that works through the backlog when there is spare bandwidth, the nightly self review, and the no slop writing gate.
+- **Seven scheduled jobs.** Morning brief, inbox triage three times a day, content ideas three times a week, a daily scene check, a 2 pm initiative slot for discretionary work from `BACKLOG.md`, a nightly review of its own work, a weekly model and skill check. Each one stays silent when there is nothing to say.
 - **Free tiers for the daily work, a paid model only when you ask.** OpenRouter, Google AI Studio, Cerebras and Groq free tiers carry the loops. `/model` switches to a Sonnet class model for a hard task and switches back.
 
 ## Setup in one line
@@ -33,7 +33,8 @@ install.sh       applies hermes/ to ~/.hermes, links skills, checks for dashes (
 hermes/          identity (SOUL.md), memory seeds, reference config, env template
 context/         read in the 00 order; the brand, the stable, the decisions, the policy, the stack, the models
 skills/          one folder per skill, SKILL.md inside, Hermes format
-cron/jobs.sh     creates the six scheduled jobs
+cron/jobs.sh     creates the seven scheduled jobs
+BACKLOG.md       discretionary work, prioritised; Flow picks from it, you add to it by chat
 scripts/         verify.sh, check-dashes.sh, llmfit-check.sh, slop_lint.py
 site/            deepf1ow.com pages, created by the first landing page build
 proposals/       what Flow proposes each night and week; calendars and research briefs

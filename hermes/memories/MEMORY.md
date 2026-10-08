@@ -4,6 +4,7 @@
 - Site: deepf1ow.com (spelling unverified on 2026-10-08, resolved to nothing). Namecheap registrar, Cloudflare DNS and Pages. Preview deploy first, production on a yes. Deploy log at ~/.hermes/deploys.log.
 - Models: OpenRouter free for chat, Gemini Flash Lite for cron and auxiliary, Cerebras fallback, Sonnet class on OpenRouter for hard tasks via /model. Rate limit log at ~/.hermes/ratelimits.log.
 - Email: himalaya CLI. Draft, show, send on yes. Standing approvals per class listed below.
+- Discretionary work: BACKLOG.md, picked by the initiative skill at 14:00 or when idle with quota. Sreekar adds items by chat.
 - Cron jobs defined in cron/jobs.sh. Output in ~/.hermes/cron/output/. Reply [SILENT] when nothing to report.
 - Standing approvals (Sreekar granted): none yet.
 - Open questions for Sreekar: the ten in context/03 (discovery skill), domain spelling and registrar login.

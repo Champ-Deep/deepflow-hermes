@@ -18,7 +18,7 @@ u=$(wc -c < "$H/memories/USER.md" 2>/dev/null || echo 0); m=$(wc -c < "$H/memori
 
 [ "$(hermes config get approvals.mode 2>/dev/null | tr -d '[:space:]')" = "smart" ] && ok "approvals.mode smart" || bad "approvals.mode is not smart"
 
-for s in deepflow-brand deepflow-brand-discovery consumer-landing-page no-ai-slop daily-marketing-loop harness-improver outreach-email image-gen-brief browse-and-fill-forms research-brief calls-on-behalf; do
+for s in deepflow-brand deepflow-brand-discovery consumer-landing-page no-ai-slop daily-marketing-loop harness-improver initiative outreach-email image-gen-brief browse-and-fill-forms research-brief calls-on-behalf; do
   [ -e "$H/skills/$s/SKILL.md" ] && ok "skill $s" || bad "skill $s not linked"
 done
 
@@ -32,11 +32,12 @@ grep -q "^TELEGRAM_ALLOWED_USERS=[0-9]" "$H/.env" 2>/dev/null && ok "Telegram al
 
 hermes gateway status 2>/dev/null | grep -qiE "running|connected|up" && ok "gateway running" || bad "gateway not running (hermes gateway install)"
 
-n=$(hermes cron list 2>/dev/null | grep -ciE "brief|triage|ideas|community|harness|weekly" || echo 0)
-[ "$n" -ge 6 ] && ok "cron jobs: $n" || warn "cron jobs found: $n of 6 (run ./cron/jobs.sh)"
+n=$(hermes cron list 2>/dev/null | grep -ciE "brief|triage|ideas|community|initiative|harness|weekly" || echo 0)
+[ "$n" -ge 7 ] && ok "cron jobs: $n" || warn "cron jobs found: $n of 7 (run ./cron/jobs.sh)"
 
 command -v wrangler >/dev/null && wrangler whoami >/dev/null 2>&1 && ok "wrangler logged in" || warn "wrangler not ready (SETUP.md step 8)"
 [ -f "$HOME/.config/himalaya/config.toml" ] && ok "himalaya configured" || warn "email not configured (SETUP.md step 9)"
+[ -f "$REPO/BACKLOG.md" ] && ok "BACKLOG.md present" || bad "BACKLOG.md missing"
 [ -f "$REPO/site/index.html" ] && ok "site/index.html exists" || warn "no site yet (consumer-landing-page skill)"
 
 "$REPO/scripts/check-dashes.sh" "$REPO" >/dev/null 2>&1 && ok "no dashes in repo" || bad "dashes in repo (scripts/check-dashes.sh)"

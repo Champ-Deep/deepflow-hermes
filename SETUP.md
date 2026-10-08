@@ -114,7 +114,7 @@ This keeps Flow on while the Mac is awake. On a MacBook Air, two settings matter
 
 ## Step 7. First conversation: discovery (Hermes)
 
-Read `context/00-READ-ORDER.md` and all nine context files. Then run the `deepflow-brand-discovery` skill. It asks Sreekar the ten questions in `context/03-the-stable-and-the-flow-arts-scene.md` plus the "Sreekar decides" items in `context/02-brand-foundation.md`, in his channel, a few at a time, with buttons. Write the answers back into those files, update `~/.hermes/memories/USER.md`, add a dated entry to `context/05-decisions.md`, and commit.
+Read `context/00-READ-ORDER.md`, all ten context files, and `BACKLOG.md`. Then run the `deepflow-brand-discovery` skill. It asks Sreekar the ten questions in `context/03-the-stable-and-the-flow-arts-scene.md` plus the "Sreekar decides" items in `context/02-brand-foundation.md`, in his channel, a few at a time, with buttons. Write the answers back into those files, update `~/.hermes/memories/USER.md`, add a dated entry to `context/05-decisions.md`, and commit.
 
 **Check:** the open items in `context/03` are filled or marked "Sreekar will decide later", and `USER.md` has his hours, practices and six month goal.
 
@@ -159,9 +159,9 @@ hermes cron list
 hermes cron status
 ```
 
-Six jobs: morning brief, inbox triage, content ideas, Instagram and community check, nightly harness review, weekly model and skill check. Every job replies `[SILENT]` when there is nothing to say. Delivery is the Telegram home channel.
+Seven jobs: morning brief, inbox triage, content ideas, Instagram and community check, a 2 pm initiative slot that works through `BACKLOG.md` when there is spare quota, nightly harness review, weekly model and skill check. Every job replies `[SILENT]` when there is nothing to say. Delivery is the Telegram home channel.
 
-**Check:** `hermes cron list` shows six jobs and the next run times.
+**Check:** `hermes cron list` shows seven jobs and the next run times.
 
 ## Step 12. Verify everything
 
@@ -173,6 +173,6 @@ It checks: SOUL.md in place, memory files under the size limits, config keys app
 
 ## Step 13. Hand over (Hermes to Sreekar, in chat)
 
-Send Sreekar this, in your own words, under ten lines: what runs each morning, how to ask for a page, how to grant a standing approval, how to switch to the paid model for a hard task (`/model`), where to see what you did (`~/.hermes/cron/output/` and the brief), and the three things you will always ask about (production site, brand, money).
+Send Sreekar this, in your own words, under ten lines: what runs each morning, how to ask for a page, how to grant a standing approval, how to switch to the paid model for a hard task (`/model`), where to see what you did (`~/.hermes/cron/output/` and the brief), how the 2 pm initiative slot works and how he adds to `BACKLOG.md` by chat, and the three things you will always ask about (production site, brand, money).
 
 Then suggest the first three jobs, as options: the holding page already up, the Instagram bio and first nine posts, or outreach to IndieFlow.

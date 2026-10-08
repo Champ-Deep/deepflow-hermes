@@ -5,7 +5,7 @@
 set -euo pipefail
 DELIVER="${DELIVER:-telegram}"   # or whatsapp, or origin
 
-names=("Morning brief" "Inbox triage" "Content ideas" "Community check" "Nightly harness review" "Weekly model and skill check")
+names=("Morning brief" "Inbox triage" "Content ideas" "Community check" "Initiative slot" "Nightly harness review" "Weekly model and skill check")
 for n in "${names[@]}"; do
   id=$(hermes cron list 2>/dev/null | grep -F "$n" | grep -oE '^[a-zA-Z0-9_-]+' | head -1 || true)
   [ -n "$id" ] && hermes cron remove "$id" >/dev/null 2>&1 || true
@@ -28,6 +28,10 @@ hermes cron create "0 11 * * 1,3,5" \
 hermes cron create "0 18 * * *" \
   "Community check. With the browser, look at Deep Flow's Instagram profile (if set) and IndieFlow's public page for new events, mentions or comments that need a reply. Check the Bangalore flow arts and horse scene for events in the next 14 days worth attending or partnering on. Report only new items, one line each, with a suggested action. Do not post or comment. $SILENT" \
   --name "Community check" --skill research-brief --deliver "$DELIVER"
+
+hermes cron create "0 14 * * *" \
+  "Initiative slot. Run the initiative skill: do the bandwidth check (today's rate limit hits, parked questions older than a day, quiet hours), then pick the top unblocked item in BACKLOG.md that needs no yes, do it within 45 minutes on the free model, put the output in proposals/ or site/ (preview only), move the item to done or parked with a reason, commit. Report in two lines: what got done and where, what needs a yes. $SILENT" \
+  --name "Initiative slot" --skill initiative --deliver "$DELIVER"
 
 hermes cron create "0 23 * * *" \
   "Nightly harness review. Run the harness-improver skill: read today's cron outputs and session logs, list failures, rate limits (~/.hermes/ratelimits.log), slow runs and places where Sreekar had to correct you. Write proposals/harness-YYYY-MM-DD.md (today's date) with concrete edits to skills, prompts or schedules. Apply edits that only change wording in a skill you own, on a git branch named harness/YYYY-MM-DD (today's date), and commit. Anything else stays a proposal. Report in three lines: what broke, what you changed, what needs a yes. $SILENT" \
