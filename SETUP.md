@@ -177,3 +177,16 @@ It checks: SOUL.md in place, memory files under the size limits, config keys app
 Send Sreekar this, in your own words, under ten lines: what runs each morning, how to ask for a page, how to grant a standing approval, how to switch to the paid model for a hard task (`/model`), where to see what you did (`~/.hermes/cron/output/` and the brief), how the 2 pm initiative slot works and how he adds to `BACKLOG.md` by chat, and the three things you will always ask about (production site, brand, money).
 
 Then suggest the first three jobs, as options: the holding page already up, the Instagram bio and first nine posts, or outreach to IndieFlow.
+
+## Step 14. Update of 2026-11-08: design bench, 21st.dev, Champ handoffs (Hermes drives, Sreekar supplies two logins)
+
+For an install that already runs. Flow does this when it sees the new commit; Sreekar does the two logins.
+
+1. `cd ~/deepflow-hermes && git pull`.
+2. Sreekar: `gh auth login` (GitHub CLI, his own account; `brew install gh` first if missing). This is what lets Flow read and write the handoff issues. Check with `gh auth status`.
+3. Sreekar: mint a free 21st.dev key at https://21st.dev/mcp (sign in, API keys), then `hermes config set TWENTY_FIRST_API_KEY <key>`. The key goes to `~/.hermes/.env`, never into chat or the repo.
+4. `./install.sh`. It clones Champ's skill bench to `~/champ-skills`, links its 44 design skills into `~/.hermes/skills/design/`, and adds the `twentyfirst` and `context7` MCP servers.
+5. `hermes mcp test twentyfirst` and `hermes mcp test context7`, both green. `ls ~/.hermes/skills/design | wc -l` prints 44 and `hermes skills list` shows them with category `design`.
+6. `./cron/jobs.sh` (recreates the eight jobs, including the new `Handoff check`).
+7. Smoke the bus both ways: `gh issue create -R Champ-Deep/deepflow-hermes --label for-champ --title "Flow is live on the handoff bus" --body "Setup step 14 done on $(date +%F). Reply here to confirm you see it."` Champ's side cards it within two hours and answers on the issue.
+8. Restart the gateway so the new MCP tools load: `hermes gateway restart`.

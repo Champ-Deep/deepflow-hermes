@@ -78,6 +78,16 @@ set_cfg whatsapp.unauthorized_dm_behavior ignore
 set_cfg whatsapp.group_policy pairing
 set_cfg whatsapp.require_mention true
 
+# MCP connectors. 21st.dev needs Sreekar's own free key (SETUP.md step 14); ${VAR} in the header is
+# resolved by Hermes from ~/.hermes/.env at connect time, so no secret lands in config.yaml.
+# Context7 is keyless library documentation; Flow reads docs before writing code against any library.
+if grep -qs '^TWENTY_FIRST_API_KEY=.' "$HERMES_HOME/.env"; then
+  set_cfg mcp_servers.twentyfirst '{"url":"https://21st.dev/api/mcp","auth":"header","headers":{"x-api-key":"${TWENTY_FIRST_API_KEY}"},"connect_timeout":60}'
+else
+  warn "TWENTY_FIRST_API_KEY not set; skipping the 21st.dev connector (SETUP.md step 14)"
+fi
+set_cfg mcp_servers.context7 '{"url":"https://mcp.context7.com/mcp","connect_timeout":60}'
+
 # 3. Skills: one symlink per folder so the repo stays the single copy
 for d in "$REPO"/skills/*/; do
   name="$(basename "$d")"
@@ -88,6 +98,9 @@ for d in "$REPO"/skills/*/; do
     warn "$target exists and is not a symlink; left alone"
   fi
 done
+
+# 3b. Champ's design bench (44 skills), linked from the public champ-skills repo
+"$REPO/scripts/sync-champ-skills.sh"
 
 # 4. Dash check across the repo
 "$REPO/scripts/check-dashes.sh" "$REPO" || fail "dashes found; fix before continuing"

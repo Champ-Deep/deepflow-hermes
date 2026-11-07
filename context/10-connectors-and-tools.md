@@ -17,6 +17,10 @@ What Flow is wired to on day one, what to add as the work grows, and how. In Her
 | Files and the repo | built in | `file`, `terminal` |
 | Memory | built in MEMORY.md and USER.md | `memory` |
 | Self improvement | built in skill writing, curator | `skills` |
+| UI components, inspiration, logos | 21st.dev MCP, Sreekar's own free key (`TWENTY_FIRST_API_KEY`); search is free, code retrieval 2 a day | `mcp_servers.twentyfirst` |
+| Library docs before writing code | Context7 MCP, no key | `mcp_servers.context7` |
+| Champ's design bench, 44 skills | public repo Champ-Deep/champ-skills, linked by `scripts/sync-champ-skills.sh`, pulled weekly | `skills` |
+| Work to and from Champ's Hermes | GitHub issues on this repo, labels `for-flow` and `for-champ`; needs `gh auth login` as Sreekar | `terminal` (`gh`) |
 
 ## Add when the need appears (Flow proposes, Sreekar says yes, Flow installs)
 

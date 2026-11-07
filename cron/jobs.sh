@@ -12,7 +12,7 @@ JOBS="${HERMES_HOME:-$HOME/.hermes}/cron/jobs.json"
 if [ -f "$JOBS" ]; then
   python3 - "$JOBS" <<'PY' | while read -r id; do hermes cron remove "$id" >/dev/null 2>&1 || true; done
 import json, sys
-names={"Morning brief","Inbox triage","Content ideas","Community check","Initiative slot","Nightly harness review","Weekly model and skill check"}
+names={"Morning brief","Inbox triage","Content ideas","Community check","Initiative slot","Nightly harness review","Weekly model and skill check","Handoff check"}
 for j in json.load(open(sys.argv[1])).get("jobs", []):
     if j.get("name") in names: print(j["id"])
 PY
@@ -45,8 +45,12 @@ hermes cron create "0 23 * * *" \
   --name "Nightly harness review" --skill harness-improver --deliver "$DELIVER" --workdir "$REPO"
 
 hermes cron create "0 10 * * 0" \
-  "Weekly model and skill check. Run hermes skills check, hermes update --check if available, and hermes approvals suggest. Re-verify every model id in hermes/config.yaml still exists on its provider with 64K or more context, and re-read the free tier limits for OpenRouter, Google AI Studio, Cerebras and Groq. Summarize changes and propose config edits in proposals/weekly-YYYY-MM-DD.md (today's date). Do not change the main model without a yes. $SILENT" \
+  "Weekly model and skill check. Run scripts/sync-champ-skills.sh (pulls Champ's design bench), hermes skills check, hermes update --check if available, and hermes approvals suggest. Re-verify every model id in hermes/config.yaml still exists on its provider with 64K or more context, and re-read the free tier limits for OpenRouter, Google AI Studio, Cerebras and Groq. Summarize changes and propose config edits in proposals/weekly-YYYY-MM-DD.md (today's date). Do not change the main model without a yes. $SILENT" \
   --name "Weekly model and skill check" --skill harness-improver --deliver "$DELIVER" --workdir "$REPO"
+
+hermes cron create "15 9-21/2 * * *" \
+  "Handoff check. Work handed to you by Champ arrives as GitHub issues: run gh issue list -R Champ-Deep/deepflow-hermes --label for-flow --state open --json number,title,body,url. For each issue not labelled flow-queued: label it flow-queued, do the work if it is reversible and needs no yes from Sreekar (otherwise ask Sreekar with options and park it), then comment the result on the issue with gh issue comment (what was done, where it is, any preview URL) and gh issue close it. If the issue asks for something on the never list or that needs Sreekar's yes, comment that and leave it open. Report one line per issue touched. $SILENT" \
+  --name "Handoff check" --deliver "$DELIVER" --workdir "$REPO"
 
 echo
 hermes cron list

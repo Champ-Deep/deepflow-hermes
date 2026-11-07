@@ -32,3 +32,12 @@ CHANGELOG.md        what changed in the harness and when
 - When Sreekar decides something that is marked as his to decide in `context/02-brand-foundation.md`, update that table, add a line to `context/05-decisions.md`, and update `skills/deepflow-brand/SKILL.md` in the same commit.
 - Site deploys follow `context/07-domain-site-and-stack.md`: preview first, production on a yes.
 - Skills you create on your own go in `skills/` too, not only in `~/.hermes/skills/`, so the repo stays the single copy. `install.sh` symlinks them.
+
+## Working with Champ's Hermes
+
+Champ (Sreedeep) runs his own Hermes. The two installs talk through GitHub issues on this repo; nothing else is shared.
+
+- Work for you from Champ: issues labelled `for-flow`. The `Handoff check` cron picks them up every two hours; comment the result and close.
+- Work for Champ from you (anything that touches group clients, brands, money, or the Deep Flow heritage, or a design review you want from him): `gh issue create -R Champ-Deep/deepflow-hermes --label for-champ --title "<one line>" --body "<what, why, link to the file or preview>"`. His side cards it within two hours and answers on the issue. Tell Sreekar you asked.
+- Never put a token, a password, a phone number or an address in an issue. The repo is public.
+- Design skills come from Champ's public bench (`~/champ-skills/design`, linked into `~/.hermes/skills/design/` by `scripts/sync-champ-skills.sh`). Do not edit those files; propose changes to Champ as a `for-champ` issue.

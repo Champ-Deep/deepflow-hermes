@@ -7,7 +7,7 @@ license: MIT
 metadata:
   hermes:
     tags: [landing-page, design, web, deepflow, cloudflare]
-    related_skills: [deepflow-brand, no-ai-slop, image-gen-brief]
+    related_skills: [deepflow-brand, no-ai-slop, image-gen-brief, frontend-design, impeccable, visual-verify, responsive-viewport-qa]
     requires_toolsets: [terminal, browser]
 ---
 
@@ -78,6 +78,16 @@ Specificity replaces social proof: the exact address, the exact time, the exact 
 
 One primary action, repeated at natural decision points (after the first screen, after the dates, at the close). Label the outcome: "Save me a place on Sunday". A short line under the button reduces felt cost: "No payment now. Just tell us you are coming." Mobile: sticky CTA once the first screen scrolls past. Forms ask for the minimum: name and WhatsApp number or email, nothing else.
 
+### 6b. Design pass, Champ's method (before any HTML)
+
+The bench in `~/.hermes/skills/design/` holds Champ's design skills. For a page, load exactly these and in this order; the rest of the bench is for decks, reports and audits.
+
+1. `frontend-design`, then `impeccable`: the direction. Write three lines under the five in `site/DESIGN.md`: the one visual idea (a photo treatment, a type move, a colour field), what makes it unmistakably this stable and not a template, and what you refuse (the pitfalls list below). A page that could be any studio's page fails here, before layout.
+2. `deepflow-brand` for tokens. Nothing from another brand skill in the bench (those are Champions Group companies).
+3. 21st.dev, with the `twentyfirst` MCP: `search` is free, so run four to six queries per page (hero, proof strip, schedule table, FAQ, sticky CTA, form) and pick by looking at the preview image, not the name. Write a short component table into `site/DESIGN.md`: region, component name and author and id, what it does on this page. Then `get_component` for at most two a day on the free key; port the rest from the preview by hand into vanilla CSS and credit the author in a comment. No React, no Tailwind: the component is a reference for shape and motion, the build stays single file.
+4. Sequence over assembly. Sections arrive one at a time as the reader scrolls, each with its own shape; never one hero that assembles itself out of parts. Real photos over illustrations or 3D stand ins; if there is no photo yet, type and space, never stock.
+5. `awwwards-inspiration` only when the first screen feels flat after step 1, and only for one reference, named in `site/DESIGN.md`.
+
 ### 7. Build
 
 - Start from `references/page-shell.html`. Keep tokens in `site/css/tokens.css`, components and micro interactions in `site/css/core.css`, motion in `site/js/core.js`. One HTML file per page.
@@ -93,6 +103,7 @@ One primary action, repeated at natural decision points (after the first screen,
 ### 8. Quality gate (mandatory, every mode except swatch)
 
 1. Screenshots at 390, 834 and 1440 (`?static=1`), with the browser tool or `npx playwright screenshot --viewport-size=390,844 <url> shot-390.png`. Look at them. Describe what a stranger sees in the first screen in one sentence; if it is not "what, where, do this", fix.
+1b. `visual-verify` on the three screenshots (contrast, cut off text, overlap, tap targets) and `responsive-viewport-qa` across the three widths. Both are in the design bench; run them, do not describe them. A gate you did not run is not passed.
 2. `grep -cP '\xe2\x80[\x93\x94]' site/*.html` prints 0.
 3. `no-ai-slop` gate on every line of copy.
 4. Phone: no horizontal overflow, tap targets 44 px or more, cards stack cleanly, sticky CTA does not cover content.

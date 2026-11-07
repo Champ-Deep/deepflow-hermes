@@ -1,3 +1,5 @@
+> Pointer: Consolidated into `Atlas/Decisions/DeepFlow Hermes Architectural Decisions.md` on 2026-10-25.
+
 # Decisions
 
 One entry per decision, newest at the bottom. Each has the decision, the reasoning, and what would change it. Hermes adds entries when Sreekar decides something; it never deletes one.
@@ -57,3 +59,11 @@ One entry per decision, newest at the bottom. Each has the decision, the reasoni
 **Decision.** Hermes does not place phone calls until Sreekar picks and funds a voice provider. The `calls-on-behalf` skill holds the options and the script rules so the day he does, it is a one hour setup.
 
 **Reasoning.** Hermes has voice mode for talking to the agent, not telephony. Outbound calls need Twilio plus a voice engine, or a hosted calling agent. The group's own standard (chosen for ChampHarbinger in October 2026) is Dial (getdial.ai) for ease of setup, with ElevenLabs plus Twilio as the alternative. Both cost money per minute.
+
+## D9. Champ's design bench is linked, not copied, and the two Hermes installs talk through GitHub issues (2026-11-08, Champ)
+
+**Decision.** Flow gets Champ's design skills by cloning the public `Champ-Deep/champ-skills` repo and symlinking its `design/` folder; the weekly cron pulls. 21st.dev runs on Sreekar's own free key. Work between Champ's Hermes and Flow travels as issues on this repo, labelled `for-flow` or `for-champ`, picked up by a cron on each side. The repo stays public, so issues carry no secrets or personal details.
+
+**Reasoning.** A copy drifts the day after it is made; a link stays current with one `git pull`. Issues need no shared server, no shared credentials and no new code: both installs already have `gh`. Sreekar's own 21st.dev key keeps his usage off Champ's account; search is free and two code retrievals a day cover one page a week.
+
+**What would change it.** Handoffs that need private detail (then the repo goes private and Sreekar is added as collaborator), or more than one page a week on 21st.dev (then Builder at 6 dollars a month).
